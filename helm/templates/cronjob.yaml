@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{include "cfddns.fullname" .}}
+  labels: {{- include "cfddns.labels" . | nindent 4}}
+spec:
+  schedule: "{{.Values.schedule}}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: "{{.Values.podName}}"
+              image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+              imagePullPolicy: {{.Values.image.pullPolicy}}
+              restartPolicy: {{.Values.image.restartPolicy}}
+              environment:
+                {{- range $key, $val := .Values.env }}
+                {{ $key }}: {{ $val | quote }}
+                {{- end }}
