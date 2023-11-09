@@ -2,6 +2,8 @@
 
 A simple cloudflare ddns script written in Go, for use as a cron job in Kubernetes.
 
+Checkout the repository here: [GitHub](https://github.com/Zaptross/cfddns)
+
 ## Setup
 
 1. Clone the repository
