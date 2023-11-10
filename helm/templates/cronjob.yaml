@@ -14,7 +14,6 @@ spec:
             - name: "{{.Values.podName}}"
               image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
               imagePullPolicy: {{.Values.image.pullPolicy}}
-              environment:
-                {{- range $key, $val := .Values.env }}
-                {{ $key }}: {{ $val | quote }}
-                {{- end }}
+              envFrom:
+                - configMapRef:
+                    name: {{include "cfddns.fullname" .}}
