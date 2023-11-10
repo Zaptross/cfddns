@@ -9,11 +9,11 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: {{.Values.image.restartPolicy}}
           containers:
             - name: "{{.Values.podName}}"
               image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
               imagePullPolicy: {{.Values.image.pullPolicy}}
-              restartPolicy: {{.Values.image.restartPolicy}}
               environment:
                 {{- range $key, $val := .Values.env }}
                 {{ $key }}: {{ $val | quote }}
