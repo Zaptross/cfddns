@@ -12,10 +12,10 @@ image:
   tag: latest
 
 env:
-  TOKEN: "<your_api_token_here>"
-  DOMAIN: "<your_domain_here>"
-  SUBDOMAIN: "<your_subdomain_here>"
-  PROXY: "<true | false>"
-  COMMENT: "<true | false>"
+  CLOUDFLARE_TOKEN: "<your_api_token_here>"
+  CLOUDFLARE_DOMAIN: "<your_domain_here>"
+  CLOUDFLARE_SUBDOMAIN: "<your_subdomain_here>"
+  CLOUDFLARE_PROXY: "<true | false>"
+  CLOUDFLARE_COMMENT: "<true | false>"
 
 schedule: "*/5 * * * *"
