@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -13,6 +14,10 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slog"
+)
+
+var (
+	ipv4Regex = regexp.MustCompile(`^(\d{1,3}\.){3}\d{1,3}$`)
 )
 
 type DDArgs struct {
@@ -144,23 +149,5 @@ func getPublicIP() (string, error) {
 }
 
 func isIPv4(ip string) bool {
-	chunks := strings.Split(ip, ".")
-
-	if len(chunks) != 4 {
-		return false
-	}
-
-	for _, chunk := range chunks {
-		if cl := len(chunk); cl == 0 || cl > 3 {
-			return false
-		}
-
-		for _, char := range chunk {
-			if char < '0' || char > '9' {
-				return false
-			}
-		}
-	}
-
-	return true
+	return ipv4Regex.MatchString(ip)
 }
