@@ -1,6 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: {{include "cfddns.fullname" .}}
   name: {{include "cfddns.fullname" .}}
   labels: {{- include "cfddns.labels" . | nindent 4}}
 spec:
@@ -15,5 +16,5 @@ spec:
               image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
               imagePullPolicy: {{.Values.image.pullPolicy}}
               envFrom:
-                - configMapRef:
+                - secretRef:
                     name: {{include "cfddns.fullname" .}}
