@@ -4,7 +4,10 @@ go 1.24.4
 
 require github.com/cloudflare/cloudflare-go v0.80.0
 
-require golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476
+require (
+	github.com/zaptross/godohuver v0.0.0-20230825072621-32d8eae4486b
+	golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476
+)
 
 require (
 	github.com/goccy/go-json v0.10.2 // indirect

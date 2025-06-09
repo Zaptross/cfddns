@@ -42,6 +42,8 @@ type DDArgs struct {
 }
 
 func main() {
+	slog.Info(getVersion())
+
 	var args DDArgs
 	err := envconfig.Process("cloudflare", &args)
 
