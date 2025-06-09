@@ -3,10 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
-	"regexp"
 	"strings"
 	"time"
 
@@ -14,10 +11,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slog"
-)
-
-var (
-	ipv4Regex = regexp.MustCompile(`^(\d{1,3}\.){3}\d{1,3}$`)
 )
 
 type DDArgs struct {
@@ -133,23 +126,4 @@ func main() {
 
 	slog.Info("DNS record updated successfully", "message", msg)
 	os.Exit(0)
-}
-
-func getPublicIP() (string, error) {
-	resp, err := http.Get("https://api.ipify.org")
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	ip, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(ip), nil
-}
-
-func isIPv4(ip string) bool {
-	return ipv4Regex.MatchString(ip)
 }
