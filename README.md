@@ -17,6 +17,7 @@ Create your cloudflare API token from the [API Tokens](https://dash.cloudflare.c
 3. Edit the `values.yaml` file and add your token, domain, subdomain and whether you want to use the proxied option.
 
    - `token`: Your cloudflare API token
+   - `zoneID`: Your Cloudflare Zone ID
    - `domain`: Your domain name
    - `subdomain`: Your subdomain name
    - `proxied`: Whether you want to use the proxied option

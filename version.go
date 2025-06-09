@@ -21,7 +21,7 @@ func getVersion() string {
 
 	semver, err := dhv.ExtractSemver(version)
 	if err == nil {
-		latest, err := dhv.GetLatestImage("zaptross/countula")
+		latest, err := dhv.GetLatestImage("zaptross/cfddns")
 
 		if err == nil {
 			if semver != latest.Tag {

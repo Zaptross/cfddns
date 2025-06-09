@@ -18,6 +18,10 @@ type DDArgs struct {
 	// account's "My Profile" page, under the "API Keys" section.
 	Token string
 
+	// Your Cloudflare Zone ID. You can find your Zone ID on your domain's
+	// Cloudflare dashboard, under the "API" section.
+	ZoneID string
+
 	// The domain to update. For example, if you want to update the record
 	// "home.example.com", the domain would be "example.com".
 	Domain string
@@ -116,7 +120,7 @@ func main() {
 		Tags:     subdomain.Tags,
 	}
 
-	_, err = api.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(subdomain.ZoneID), update)
+	_, err = api.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(zoneID), update)
 
 	if err != nil {
 		slog.Error("Failed to update DNS record", "subdomain", subdomain.Name, "error", err)
