@@ -18,3 +18,5 @@ spec:
               envFrom:
                 - secretRef:
                     name: {{include "cfddns.fullname" .}}
+                - configMapRef:
+                    name: {{include "cfddns.fullname" .}}

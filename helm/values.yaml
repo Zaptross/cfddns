@@ -12,9 +12,11 @@ image:
   restartPolicy: OnFailure
   tag: 0.2.1
 
-env:
+secrets:
   CLOUDFLARE_TOKEN: "<your_api_token_here>"
   CLOUDFLARE_ZONEID: "<your_zone_id_here>"
+
+env:
   CLOUDFLARE_DOMAIN: "<your_domain_here>"
   CLOUDFLARE_SUBDOMAIN: "<your_subdomain_here>"
   CLOUDFLARE_PROXY: "<true | false>"
