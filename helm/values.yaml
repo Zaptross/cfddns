@@ -4,6 +4,7 @@
 
 replicaCount: 1
 podName: "cf-ddclient"
+namespace: "cfddns"
 
 image:
   repository: zaptross/cfddns
