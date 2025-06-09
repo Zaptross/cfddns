@@ -1,10 +1,10 @@
 module github.com/zaptross/cf-ddclient-helm
 
-go 1.20
+go 1.24.4
 
 require github.com/cloudflare/cloudflare-go v0.80.0
 
-require golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
+require golang.org/x/exp v0.0.0-20250606033433-dcc06ee1d476
 
 require (
 	github.com/goccy/go-json v0.10.2 // indirect
