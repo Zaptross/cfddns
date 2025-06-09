@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,6 +12,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/samber/lo"
+	"golang.org/x/exp/slog"
 )
 
 type DDArgs struct {
@@ -41,33 +41,42 @@ func main() {
 	err := envconfig.Process("cloudflare", &args)
 
 	if err != nil {
-		errorExit(err)
+		slog.Error("Failed to process environment variables", "error", err)
+		os.Exit(1)
 	}
 
 	api, err := cloudflare.NewWithAPIToken(args.Token)
 
 	if err != nil {
-		errorExit(err)
+		slog.Error("Failed to create Cloudflare API client", "error", err)
+		os.Exit(1)
 	}
 
 	zoneID, err := api.ZoneIDByName(args.Domain)
 
 	if err != nil {
-		errorExit(err)
+		slog.Error("Failed to get zone ID for domain", "domain", args.Domain, "error", err)
+		os.Exit(1)
 	}
 
 	publicIP, err := getPublicIP()
 
-	if err != nil || !isIPv4(publicIP) {
-		errorExit(err)
+	if err != nil {
+		slog.Error("Failed to get public IP address", "error", err)
 		return
+	}
+
+	if !isIPv4(publicIP) {
+		slog.Error("Invalid public IP address", "ip", publicIP)
+		os.Exit(1)
 	}
 
 	ctx := context.Background()
 
 	records, _, err := api.ListDNSRecords(ctx, cloudflare.ZoneIdentifier(zoneID), cloudflare.ListDNSRecordsParams{})
 	if err != nil {
-		errorExit(err)
+		slog.Error("Failed to list DNS records", "error", err)
+		os.Exit(1)
 		return
 	}
 
@@ -77,12 +86,14 @@ func main() {
 	})
 
 	if !found {
-		errorExit(errors.New("subdomain not found"))
+		slog.Error("Subdomain not found", "subdomain", target)
+		os.Exit(1)
 		return
 	}
 
 	if publicIP == subdomain.Content {
-		successExit("No changes detected")
+		slog.Info("No update needed", "subdomain", subdomain.Name, "currentIP", subdomain.Content, "publicIP", publicIP)
+		os.Exit(0)
 		return
 	}
 
@@ -108,11 +119,13 @@ func main() {
 	_, err = api.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(subdomain.ZoneID), update)
 
 	if err != nil {
-		errorExit(err)
+		slog.Error("Failed to update DNS record", "subdomain", subdomain.Name, "error", err)
+		os.Exit(1)
 		return
 	}
 
-	successExit(msg)
+	slog.Info("DNS record updated successfully", "message", msg)
+	os.Exit(0)
 }
 
 func getPublicIP() (string, error) {
@@ -128,16 +141,6 @@ func getPublicIP() (string, error) {
 	}
 
 	return string(ip), nil
-}
-
-func successExit(msg string) {
-	fmt.Println(msg)
-	os.Exit(0)
-}
-
-func errorExit(err error) {
-	fmt.Println(err)
-	os.Exit(1)
 }
 
 func isIPv4(ip string) bool {
